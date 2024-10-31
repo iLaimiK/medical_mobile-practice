@@ -1,9 +1,14 @@
-import { fileURLToPath, URL } from 'node:url'
+import { fileURLToPath, URL } from "node:url";
 
-import vue from '@vitejs/plugin-vue'
-import vueJsx from '@vitejs/plugin-vue-jsx'
-import { defineConfig } from 'vite'
-import checker from 'vite-plugin-checker'
+import vue from "@vitejs/plugin-vue";
+import vueJsx from "@vitejs/plugin-vue-jsx";
+import { defineConfig } from "vite";
+import checker from "vite-plugin-checker";
+
+// vant
+import { VantResolver } from "@vant/auto-import-resolver";
+import AutoImport from "unplugin-auto-import/vite";
+import Components from "unplugin-vue-components/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -14,10 +19,24 @@ export default defineConfig({
       typescript: true,
       vueTsc: true,
     }),
+    AutoImport({
+      resolvers: [VantResolver()],
+    }),
+    Components({
+      resolvers: [VantResolver()],
+    }),
   ],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
+  base: "",
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: "modern-compiler",
+      },
     },
   },
-})
+  resolve: {
+    alias: {
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+    },
+  },
+});
