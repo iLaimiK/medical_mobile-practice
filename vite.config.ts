@@ -20,10 +20,22 @@ export default defineConfig({
       vueTsc: true,
     }),
     AutoImport({
-      resolvers: [VantResolver()],
+      dts: true,
+      resolvers: [
+        VantResolver({
+          // Disable style import
+          importStyle: false,
+        }),
+      ],
     }),
     Components({
-      resolvers: [VantResolver()],
+      dts: true,
+      resolvers: [
+        VantResolver({
+          // Disable style import
+          importStyle: false,
+        }),
+      ],
     }),
   ],
   base: "",
