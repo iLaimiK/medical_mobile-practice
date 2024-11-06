@@ -1,17 +1,27 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
-    // {
-    //     path: '/',
-    //     name: 'layout',
-    //     component: Layout,
-    // },
-    {
-        path: '/login',
-        name: 'login',
-        component: () => import('@/views/Login/index.vue'),
-    }
-]
+  // {
+  //     path: '/',
+  //     name: 'layout',
+  //     component: Layout,
+  // },
+  {
+    path: "/login",
+    name: "login",
+    component: () => import("@/views/Login/index.vue"),
+  },
+  {
+    path: "/login/callback",
+    component: () => import("@/views/Login/LoginCallback.vue"),
+    meta: { title: "第三方登录-绑定手机" },
+  },
+  {
+    path: "/register",
+    name: "register",
+    component: () => import("@/views/Register/index.vue"),
+  },
+];
 
 const router = createRouter({
   // history: createWebHashHistory(import.meta.env.BASE_URL),  哈希模式

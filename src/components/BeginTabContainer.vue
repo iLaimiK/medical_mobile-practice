@@ -6,9 +6,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const emit = defineEmits<{
-  (e: "tab2-click"): void;
-}>();
+const emit = defineEmits<(e: "tab2-click") => void>();
 
 const handleClick = () => {
   emit("tab2-click");

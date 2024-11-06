@@ -10,6 +10,9 @@ import { VantResolver } from "@vant/auto-import-resolver";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 
+import path from "path";
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -36,6 +39,12 @@ export default defineConfig({
           importStyle: false,
         }),
       ],
+    }),
+    createSvgIconsPlugin({
+      // Specify the icon folder to be cached
+      iconDirs: [path.resolve(process.cwd(), "src/icons")],
+      // Specify symbolId format
+      symbolId: "icon-[dir]-[name]",
     }),
   ],
   base: "",

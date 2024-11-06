@@ -1,20 +1,69 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { useMobileCode } from "@/composables";
+import { loginByCodeAPI, loginByPwdAPI } from "@/services/user";
+import { useUserStore } from "@/stores/modules/user";
+import { codeRules, mobileRules, pwdRules } from "@/utils/rules";
+import { showSuccessToast, showToast } from "vant";
+import { computed, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 const router = useRouter();
+const route = useRoute();
+const userStore = useUserStore();
+
+// 顶部右侧按钮点击事件
 const toRegister = () => {
   router.push("/register");
 };
 
 // 表单相关
-const username = ref("");
-const password = ref("");
-const onSubmit = (values: unknown) => {
-  console.log("submit", values);
+const username = ref<string>("");
+const password = ref<string>("");
+const SMScode = ref<string>("");
+const agreementChecked = ref<boolean>(false);
+
+// 是否隐藏密码
+const isHidePwd = ref<boolean>(true);
+
+// 登录
+const onLogin = async () => {
+  if (!agreementChecked.value) {
+    return showToast("请同意用户协议及隐私条款");
+  }
+  // 登录逻辑
+  const res = isPwdLogin.value
+    ? await loginByPwdAPI(username.value, password.value)
+    : await loginByCodeAPI(username.value, SMScode.value);
+
+  userStore.loginUser(res.data);
+  // 判断是否有回跳地址
+  router.push((route.query.returnUrl as string) || "/user");
+  showSuccessToast("登录成功");
 };
 
-const checked = ref(false);
+// 验证码相关
+const { sendCode, time, form } = useMobileCode(username, "login");
+const codeText = computed(() =>
+  time.value > 0 ? `${time.value}s后重新获取` : "获取验证码",
+);
+
+
+// 界面切换
+const isPwdLogin = ref<boolean>(true);
+const mainText = computed(() => (isPwdLogin.value ? "密码登录" : "验证码登录"));
+const subText = computed(() => (isPwdLogin.value ? "验证码登录" : "密码登录"));
+const switchLoginType = () => {
+  isPwdLogin.value = !isPwdLogin.value;
+};
+
+// 登录按钮禁用
+const isFormComplete = computed(() => {
+  if (isPwdLogin.value) {
+    return username.value.trim() !== "" && password.value.trim() !== "";
+  } else {
+    return username.value.trim() !== "" && SMScode.value.trim() !== "";
+  }
+});
 </script>
 
 <template>
@@ -24,30 +73,58 @@ const checked = ref(false);
     <!-- 切换标签 -->
     <div class="login-tabs">
       <BeginTabContainer
-        name1="密码登录"
-        name2="手机验证码登录"
+        :name1="mainText"
+        :name2="subText"
+        @tab2-click="switchLoginType"
       ></BeginTabContainer>
+      <span v-show="!isPwdLogin"
+        >模拟生成验证码，请从调试的 network 获取验证码！</span
+      >
     </div>
     <!-- 表单 -->
     <div class="login-form">
-      <van-form @submit="onSubmit">
+      <van-form ref="form" @submit="onLogin">
         <van-cell-group>
           <van-field
             v-model="username"
             name="mobile"
             placeholder="请输入手机号码"
-            :rules="[{ required: true, message: '请填手机号码' }]"
+            :rules="mobileRules"
           />
           <van-field
+            v-if="isPwdLogin"
             v-model="password"
-            type="password"
+            :type="isHidePwd ? 'password' : 'text'"
             name="password"
             placeholder="请输入密码"
-            :rules="[{ required: true, message: '请填写密码' }]"
-          />
+            :rules="pwdRules"
+          >
+            <template #button>
+              <SvgIcon
+                @click="isHidePwd = !isHidePwd"
+                :name="`login-eye-${isHidePwd ? 'on' : 'off'}`"
+              ></SvgIcon>
+            </template>
+          </van-field>
+          <van-field
+            v-else
+            v-model="SMScode"
+            name="SMScode"
+            placeholder="请输入验证码"
+            :rules="codeRules"
+          >
+            <template #button>
+              <span
+                class="SMScode-send"
+                :class="{ active: time > 0 }"
+                @click="sendCode"
+                >{{ codeText }}</span
+              >
+            </template>
+          </van-field>
         </van-cell-group>
         <div class="agreement-cell">
-          <van-checkbox v-model="checked">
+          <van-checkbox v-model="agreementChecked">
             <span>我已同意</span>
             <a href="javascript:;">用户协议</a>
             <span>及</span>
@@ -55,7 +132,13 @@ const checked = ref(false);
           </van-checkbox>
         </div>
         <div class="submit-btn">
-          <van-button round block type="primary" native-type="submit">
+          <van-button
+            round
+            block
+            type="primary"
+            native-type="submit"
+            :disabled="!isFormComplete"
+          >
             登录
           </van-button>
         </div>
@@ -64,73 +147,10 @@ const checked = ref(false);
         </div>
       </van-form>
     </div>
-    <div class="login-other">
-      <van-divider>第三方登录</van-divider>
-      <div class="icon">
-        <img src="@/assets/qq.svg" alt="" />
-      </div>
-    </div>
+    <LoginOther></LoginOther>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.login-page {
-  padding-top: 46px;
-}
-.login-form {
-  padding: 0 15px;
-  .van-form {
-    .van-cell-group {
-      padding: 0 var(--van-cell-horizontal-padding);
-      .van-cell {
-        position: inherit;
-        padding: var(--van-cell-vertical-padding) 0;
-      }
-    }
-    .van-hairline--top-bottom {
-      position: inherit;
-    }
-    .van-field {
-      border-bottom: 1px solid #e5e5e5;
-    }
-    .agreement-cell {
-      box-sizing: border-box;
-      padding: 15px 18px;
-      .van-checkbox {
-        a {
-          color: var(--cp-primary);
-          padding: 0 5px;
-        }
-      }
-    }
-    .submit-btn {
-      padding: 5px 5px 0;
-    }
-    .pwd-forget {
-      text-align: center;
-      padding: 15px;
-      a {
-        color: var(--cp-text3);
-      }
-    }
-  }
-}
-
-.login-other {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  margin-bottom: 50px;
-  .van-divider {
-    padding: 0 60px;
-  }
-  .icon {
-    display: flex;
-    justify-content: center;
-    img {
-      width: 36px;
-      height: 36px;
-    }
-  }
-}
+@use "@/styles/login.scss";
 </style>

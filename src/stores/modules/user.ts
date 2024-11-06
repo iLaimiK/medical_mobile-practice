@@ -1,10 +1,16 @@
-import type { User } from "@/types/user";
+import type { User, UserId } from "@/types/user";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useUserStore = defineStore(
   "user",
   () => {
+    // 用户注册 ID
+    const registerId = ref<UserId>();
+    // 用户注册
+    const registerUser = (userId: UserId) => {
+      registerId.value = userId;
+    };
     // 用户信息
     const user = ref<User>();
     // 用户登录
@@ -17,9 +23,11 @@ export const useUserStore = defineStore(
     };
 
     return {
+      registerId,
       user,
       loginUser,
       logoutUser,
+      registerUser,
     };
   },
   {

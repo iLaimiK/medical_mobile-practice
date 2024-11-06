@@ -1,0 +1,61 @@
+.login-page {
+  padding-top: 46px;
+}
+.login-tabs {
+  position: relative;
+  span {
+    position: absolute;
+    bottom: 15px;
+    left: 30px;
+    color: #e00f0f;
+  }
+}
+.login-form {
+  padding: 0 15px;
+  .van-form {
+    .van-cell-group {
+      padding: 0 var(--van-cell-horizontal-padding);
+      .van-cell {
+        position: inherit;
+        padding: var(--van-cell-vertical-padding) 0;
+      }
+    }
+    .van-hairline--top-bottom {
+      position: inherit;
+    }
+    .van-field {
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .SMScode-send {
+      color: var(--cp-primary);
+      &.active {
+        color: rgba(22, 194, 163, 0.5);
+      }
+    }
+    .agreement-cell {
+      box-sizing: border-box;
+      padding: 15px 18px;
+      .van-checkbox {
+        a {
+          color: var(--cp-primary);
+          padding: 0 5px;
+        }
+      }
+    }
+    .submit-btn {
+      padding: 5px 5px 0;
+      .van-button--disabled {
+        background-color: #ddd;
+        border-color: #ddd;
+        color: #888;
+      }
+    }
+    .pwd-forget {
+      text-align: center;
+      padding: 15px;
+      a {
+        color: var(--cp-text3);
+      }
+    }
+  }
+}
