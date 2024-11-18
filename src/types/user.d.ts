@@ -5,12 +5,14 @@ export type UserId = string;
 export type User = {
   /* token */
   token: string;
+  /* refreshToken */
+  refreshToken: string;
   /* 用户id */
   id: UserId;
   /* 昵称 */
-  account: string;
+  account?: string;
   /* 手机 */
-  mobile: string;
+  mobile?: string;
   /* 头像 */
   avatar: string;
 };
@@ -22,3 +24,27 @@ export type CodeType =
   | "changeMobile"
   | "forgetPassword"
   | "bindMobile";
+
+// 个人信息
+type OmitUser = Omit<User, "token" | "refreshToken">;
+export type UserInfo = OmitUser & {
+  /* 关注 */
+  likeNumber: number;
+  /* 收藏 */
+  collectionNumber: number;
+  /* 积分 */
+  score: number;
+  /* 优惠券数量 */
+  couponNumber: number;
+  /* 订单信息 */
+  orderInfo: {
+    /* 待付款 */
+    paidNumber: number;
+    /* 待发货 */
+    receivedNumber: number;
+    /* 待收货 */
+    shippedNumber: number;
+    /* 已完成 */
+    finishedNumber: number;
+  };
+};

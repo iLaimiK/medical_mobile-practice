@@ -1,3 +1,10 @@
+// 文件api类型
+export type FileInfo = {
+    id: string;
+    url: string;
+};
+
+// 定义QQ登录api类型
 type QCType = {
   Login: {
     check(): boolean;

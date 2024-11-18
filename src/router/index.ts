@@ -1,6 +1,7 @@
-import { createRouter, createWebHistory } from "vue-router";
-// 引入进度条插件
 import { useUserStore } from "@/stores/modules/user";
+import { createRouter, createWebHistory } from "vue-router";
+
+// 引入进度条插件
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 
@@ -52,6 +53,30 @@ const routes = [
     name: "register",
     component: () => import("@/views/Register/index.vue"),
   },
+  {
+    path: "/user/setting",
+    name: "userSetting",
+    component: () => import("@/views/User/UserSetting.vue"),
+    meta: {
+      title: "设置",
+    },
+  },
+  {
+    path: "/user/patient",
+    name: "patient",
+    component: () => import("@/views/User/PatientPage.vue"),
+    meta: {
+      title: "家庭档案",
+    },
+  },
+  {
+    path: "/about",
+    name: "about",
+    component: () => import("@/views/User/AboutUs.vue"),
+    meta: {
+      title: "关于我们",
+    },
+  },
 ];
 
 const router = createRouter({
@@ -71,7 +96,7 @@ NProgress.configure({
   showSpinner: false, // 是否显示加载ico
   trickleSpeed: 200, // 自动递增间隔
   minimum: 0.3, // 更改启动时使用的最小百分比
-  parent: "body", //指定进度条的父容器
+  parent: "body", // 指定进度条的父容器
 });
 
 // 前置守卫 访问权限控制
@@ -91,7 +116,7 @@ router.beforeEach((to) => {
 // 后置守卫
 router.afterEach((to) => {
   // 页面标题
-  document.title = to.meta.title || "医健";
+  document.title = to.meta.title ?? "医健";
   // 关闭页面进度条
   NProgress.done();
 });

@@ -2,6 +2,9 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 
+// vant 懒加载
+import { Lazyload } from "vant";
+
 // 导入 pinia
 import pinia from "./stores";
 
@@ -13,6 +16,7 @@ import "./styles/main.scss";
 
 const app = createApp(App);
 
+app.use(Lazyload);
 app.use(pinia);
 app.use(router);
 

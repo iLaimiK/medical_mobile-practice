@@ -1,5 +1,13 @@
-import type { CodeType, User, UserId } from "@/types/user";
+import type { CodeType, User, UserId, UserInfo } from "@/types/user";
 import { req } from "@/utils/request";
+
+// 刷新token
+export const refreshTokenAPI = (refreshToken: string) => {
+  return req<User>("/login/refreshToken", "post", {
+    grantType: "refreshToken",
+    refreshToken,
+  });
+};
 
 // 注册
 export const registerAPI = (mobile: string, code: string, password: string) => {
@@ -33,3 +41,6 @@ export const loginByQQAPI = (openId: string) => {
 export const bindMobileAPI = (mobile: string, code: string, openId: string) => {
   return req<User>("/login/binding", "post", { mobile, code, openId });
 };
+
+// 获取用户信息api
+export const getUserInfoAPI = () => req<UserInfo>("/patient/myUser");
