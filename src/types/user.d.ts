@@ -52,7 +52,7 @@ export type UserInfo = OmitUser & {
 // 患者信息
 export type PatientInfo = {
   /* 患者id */
-  id: string;
+  id?: string;
   /* 患者姓名 */
   name: string;
   /* 身份证号 */
@@ -62,9 +62,9 @@ export type PatientInfo = {
   /* 0 女  1 男 */
   gender: 0 | 1;
   /**性别文字 */
-  genderValue: string;
+  genderValue?: string;
   /* 年龄 */
-  age: number;
+  age?: number;
 };
 
 // 患者列表

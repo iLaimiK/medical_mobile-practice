@@ -1,30 +1,34 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 
-const router = useRouter()
+const router = useRouter();
 
 type Props = {
-    title?: string,
-    rightText?: string
-}
+  title?: string;
+  rightText?: string;
+  back?: () => void;
+};
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
 // 左侧按钮点击事件
 const onClickLeft = () => {
-    // 判断历史记录中是否有上一页
-    if (history.state?.back) {
-        router.back()
-    } else {
-        router.push("/")
-    }
+  if (props.back) {
+    return props.back();
+  }
+  // 判断历史记录中是否有上一页
+  if (history.state?.back) {
+    router.back();
+  } else {
+    router.push("/");
+  }
 };
 
 // 右侧按钮点击事件
-const emit = defineEmits<(e: "right-click") => void>()
+const emit = defineEmits<(e: "right-click") => void>();
 const onClickRight = () => {
-    emit("right-click")
-}
+  emit("right-click");
+};
 </script>
 
 <template>
