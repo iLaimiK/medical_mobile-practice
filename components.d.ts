@@ -10,6 +10,7 @@ declare module 'vue' {
     BeginNavBar: typeof import('./src/components/BeginNavBar.vue')['default']
     BeginTabContainer: typeof import('./src/components/BeginTabContainer.vue')['default']
     LoginOther: typeof import('./src/components/LoginOther.vue')['default']
+    RadioBtn: typeof import('./src/components/RadioBtn.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SvgIcon: typeof import('./src/components/SvgIcon.vue')['default']

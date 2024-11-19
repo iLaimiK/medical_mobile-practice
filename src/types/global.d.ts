@@ -1,5 +1,5 @@
 // 文件api类型
-export type FileInfo = {
+type FileInfo = {
     id: string;
     url: string;
 };

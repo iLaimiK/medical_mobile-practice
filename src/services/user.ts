@@ -1,4 +1,4 @@
-import type { CodeType, User, UserId, UserInfo } from "@/types/user";
+import type { CodeType, PatientList, User, UserId, UserInfo } from "@/types/user";
 import { req } from "@/utils/request";
 
 // 刷新token
@@ -44,3 +44,6 @@ export const bindMobileAPI = (mobile: string, code: string, openId: string) => {
 
 // 获取用户信息api
 export const getUserInfoAPI = () => req<UserInfo>("/patient/myUser");
+
+// 获取患者信息列表api
+export const getPatientListAPI = () => req<PatientList>("/patient/mylist");

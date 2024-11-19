@@ -48,3 +48,24 @@ export type UserInfo = OmitUser & {
     finishedNumber: number;
   };
 };
+
+// 患者信息
+export type PatientInfo = {
+  /* 患者id */
+  id: string;
+  /* 患者姓名 */
+  name: string;
+  /* 身份证号 */
+  idCard: string;
+  /* 0不默认  1默认 */
+  defaultFlag: 0 | 1;
+  /* 0 女  1 男 */
+  gender: 0 | 1;
+  /**性别文字 */
+  genderValue: string;
+  /* 年龄 */
+  age: number;
+};
+
+// 患者列表
+export type PatientList = PatientInfo[];

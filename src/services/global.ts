@@ -1,4 +1,3 @@
-import type { FileInfo } from "@/types/global";
 import { req } from "@/utils/request";
 
 // 上传文件/图片api

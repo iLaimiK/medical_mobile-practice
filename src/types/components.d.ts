@@ -1,6 +1,7 @@
 import BeginNavBar from "@/components/BeginNavBar.vue";
 import BeginTabContainer from "@/components/BeginTabContainer.vue";
 import LoginOther from "@/components/LoginOther.vue";
+import RadioBtn from "@/components/RadioBtn.vue";
 import SvgIcon from "@/components/SvgIcon.vue";
 
 declare module "vue" {
@@ -10,5 +11,6 @@ declare module "vue" {
     BeginTabContainer: typeof BeginTabContainer;
     LoginOther: typeof LoginOther;
     SvgIcon: typeof SvgIcon;
+    RadioBtn: typeof RadioBtn;
   }
 }

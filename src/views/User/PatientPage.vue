@@ -1,37 +1,40 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { getPatientListAPI } from "@/services/user";
+import type { PatientList } from "@/types/user";
+import { onMounted, ref } from "vue";
+
+const list = ref<PatientList>([]);
+const getList = async () => {
+  const res = await getPatientListAPI();
+  list.value = res.data;
+};
+
+onMounted(() => {
+  getList();
+});
+</script>
 
 <template>
   <div class="patient-page">
     <BeginNavBar title="家庭档案"></BeginNavBar>
     <div class="patient-list">
-      <div class="patient-item">
+      <div class="patient-item" v-for="item in list" :key="item.id">
         <div class="info">
           <div class="top">
-            <span class="name">小明</span>
-            <span class="id">123456</span>
+            <span class="name">{{ item.name }}</span>
+            <span class="id">{{
+              item.idCard.replace(/^(.{6}).+(.{4})$/, "$1****$2")
+            }}</span>
           </div>
           <div class="bottom">
-            <span class="gender">男</span>
-            <span class="age">18</span>
+            <span class="gender">{{ item.genderValue }}</span>
+            <span class="age">{{ item.age }}岁</span>
           </div>
         </div>
         <div class="icon"><SvgIcon name="user-edit" /></div>
-        <div class="tag">默认</div>
+        <div class="tag" v-if="item.defaultFlag === 1">默认</div>
       </div>
-      <div class="patient-item">
-        <div class="info">
-          <div class="top">
-            <span class="name">小明</span>
-            <span class="id">123456</span>
-          </div>
-          <div class="bottom">
-            <span class="gender">男</span>
-            <span class="age">18</span>
-          </div>
-        </div>
-        <div class="icon"><SvgIcon name="user-edit" /></div>
-      </div>
-      <div class="patient-add">
+      <div class="patient-add" v-if="list.length < 6">
         <SvgIcon name="user-add" />
         <p>添加患者</p>
       </div>
