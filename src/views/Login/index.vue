@@ -17,7 +17,7 @@ const toRegister = () => {
 };
 
 // 表单相关
-const username = ref<string>("13230000100");
+const username = ref<string>("13212345678");
 const password = ref<string>("abc12345");
 const SMScode = ref<string>("");
 const agreementChecked = ref<boolean>(false);

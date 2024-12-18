@@ -77,6 +77,14 @@ const routes = [
       title: "关于我们",
     },
   },
+  {
+    path: "/home/recommendfollow",
+    name: "recommendfollow",
+    component: () => import("@/views/Home/RecommandFollow.vue"),
+    meta: {
+      title: "推荐关注",
+    },
+  },
 ];
 
 const router = createRouter({

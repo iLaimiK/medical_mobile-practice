@@ -1,4 +1,6 @@
+import { followOrUnfollowAPI } from "@/services/consult";
 import { sendCodeAPI } from "@/services/user";
+import type { FollowType } from "@/types/consult";
 import type { CodeType } from "@/types/user";
 import { showSuccessToast, type FormInstance } from "vant";
 import { onUnmounted, ref, type Ref } from "vue";
@@ -30,4 +32,19 @@ export const useMobileCode = (mobile: Ref<string>, type: CodeType) => {
   });
 
   return { sendCode, time, form };
+};
+
+// 关注或取消关注
+export const useFollow = (type: FollowType = "doc") => {
+  const loading = ref(false);
+  const follow = async (item: { id: string; likeFlag: 0 | 1 }) => {
+    loading.value = true;
+    try {
+      await followOrUnfollowAPI(item.id, type);
+      item.likeFlag = item.likeFlag === 1 ? 0 : 1;
+    } finally {
+      loading.value = false;
+    }
+  };
+  return { loading, follow };
 };

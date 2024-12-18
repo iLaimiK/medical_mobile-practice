@@ -36,7 +36,7 @@ const qqLogin = () => {
 .login-other {
   position: absolute;
   bottom: 0;
-  width: 100%;
+  width: 99%;
   margin-bottom: 50px;
   .van-divider {
     padding: 0 60px;
@@ -48,6 +48,11 @@ const qqLogin = () => {
       width: 36px;
       height: 36px;
     }
+  }
+}
+@media screen and (min-height: 720px) {
+  .login-other {
+    margin-bottom: 40px;
   }
 }
 </style>
